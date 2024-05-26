@@ -53,7 +53,7 @@ For first learn I use:
 Download it and get zip file.
 
 `import pandas as pd` import and rename pandas lib to pd
-`df = pd.read_csv('vgsales.csv')` load csv file 
+`df = pd.read_csv('vgsales.csv')` load csv file
 ^ note: `vgsales.csv` file in same path
 
 #### `pandas` usefull methods:
@@ -73,6 +73,118 @@ Download it and get zip file.
 `shift + tab` - show method signature
 `ctrl + /` - comment/uncomment row
 
-23:16
+</details>
+
+<details>
+<summary>
+    
+### Adding music csv file:
+</summary>
+
+1. Import the Data
+
+At first need import pandas `import pandas as pd`
+then need set as variable `music_data = pd.read_csv('music.csv')`
+
+2. Clean the Data
+   We dont need clean data because it's already clean
+
+After this, we also need to divide our database into two categories
+input and output dataset. To implement this we will use the `.drop()` method
+This method allows you to remove unnecessary columns. (It does not change the original data but actually creates a new database but without the selected columns)
+Therefore, by common convention, such data is designated with a capital letter `X`
+
+Now we must create output dataset and by common convention, such data is desigated
+with a lowercase letter `y` `y = music_data['genre']`
+
+The next step is a build model by using ML algorithm. In this time we will use a
+simple algorithm calling design tree in library `scikit-learn`
+
+`from sklearn.tree import DecisionTreeClassifier`
+
+after this we set new object to `DecisionTreeClassifier` class and call his
+`fit` method. That method take 2 parametrs: input and output dataset
+
+```py
+model = DecisionTreeClassifier()
+```
+
+```py
+model.fit(X, y)
+```
+
+to get predictions using `DecisionTreeClassifier` we need call `predict`
+method from our model.
+
+```py
+predictions = model.predict([ [21, 1], [22, 0] ])
+```
+
+but that one is a old version, here are new version
+
+```py
+# Данные для предсказания, оформленные как DataFrame
+prediction_data = pd.DataFrame({
+    'age': [21, 22],
+    'gender': [1, 0]
+})
+
+# Предсказание
+predictions = model.predict(prediction_data)
+print(predictions)
+```
+
+now we need calculate our model Accuracy
+
+```py
+import pandas as pd
+from sklearn.tree import DecisionTreeClassifier
+
+music_data = pd.read_csv('music.csv')
+X = music_data.drop(columns=['genre'])
+y = music_data['genre']
+
+model = DecisionTreeClassifier()
+model.fit(X, y)
+
+predictions = model.predict([ [21, 1], [22, 0] ])
+predictions
+```
+
+Calculating Accuracy
+```py
+import pandas as pd
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.model_selection import train_test_split  # easy split our dataset to 2 sets (training and setting)
+
+from sklearn.metrics import accuracy_score  # class to detect our accuracy score
+
+music_data = pd.read_csv('music.csv')
+X = music_data.drop(columns=['genre'])
+y = music_data['genre']
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)  # get 3 arguments: input and output dataset and  set percent to testing (0.2 == 20%)
+# This method return a tuple fitst two is an input sets for training and second two is an output sets for training
+
+model = DecisionTreeClassifier()
+# Now to start training we want send out training dataset
+model.fit(X_train, y_train)  # model.fit(X, y)
+# also we past here X_test (), this dataset contains the input values for testing
+predictions = model.predict(X_test)  # actually values
+# to calculate our accuracy we just need to compare with our actual y_test values
+score = accuracy_score(y_test, predictions)  # its contained accepted values and actually values
+
+score
+```
+
+To test our Accuracy score we can press ctrl + Enter and we rerun current block multiple times. This class always get randomly values from our database.
+
+And if we set our testing size to 0.8 (80%) its means that we use 20% our dataset to training and 80% to testing
+</details>
+
+<details>
+<summary>
+    
+### Persisting Models (Сохраняющиеся модели):
+</summary>
 
 </details>
