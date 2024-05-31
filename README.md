@@ -152,6 +152,7 @@ predictions
 ```
 
 Calculating Accuracy
+
 ```py
 import pandas as pd
 from sklearn.tree import DecisionTreeClassifier
@@ -179,6 +180,7 @@ score
 To test our Accuracy score we can press ctrl + Enter and we rerun current block multiple times. This class always get randomly values from our database.
 
 And if we set our testing size to 0.8 (80%) its means that we use 20% our dataset to training and 80% to testing
+
 </details>
 
 <details>
@@ -186,5 +188,74 @@ And if we set our testing size to 0.8 (80%) its means that we use 20% our datase
     
 ### Persisting Models (Сохраняющиеся модели):
 </summary>
+
+Чтобы не создавать каждый раз нашу модель для каждого нового пользователя нам необходимо где то сохранить уже созданные модели.
+
+```py
+import pandas as pd
+from sklearn.tree import DecisionTreeClassifier  # используется для выполнения задач классификации
+
+import joblib  # импортируем joblib обект. Этот обект тиеет методы для сохранения наших моделей
+
+# Теперь чтобы каждый раз не пересобрать нашу модель прокоментируем наш код
+# music_data = pd.read_csv('music.csv')
+# X = music_data.drop(columns=['genre'])
+# y = music_data['genre']
+
+# model = DecisionTreeClassifier()  #
+# model.fit(X, y)  # обучаем модель
+
+# После обучения вызываем и передаем два аргументы
+# joblib.dump(model, 'music-recommender.joblib')  # получает модель и название файла где хранит
+
+# predictions = model.predict([21, 1])  # Временно закоментирую строку прогнозов
+
+# Для загрузки сохраненной дамп файла
+model = joblib.load('music-recommender.joblib')
+predictions = model.predict([[21, 1]])
+predictions
+```
+
+</details>
+
+<details>
+<summary>
+    
+### Visualizing Decision Trees (Визуализация деревьев решений):
+</summary>
+
+```py
+# Упрощаем код для визуализации
+import pandas as pd
+from sklearn.tree import DecisionTreeClassifier
+# обект tree имеет метод для вывода в графическом формате
+from sklearn import tree
+
+# Импортируем набор данных
+music_data = pd.read_csv('music.csv')
+# Создаем наборы входных и выходных данных (imput and outout datasets)
+X = music_data.drop(columns=['genre'])
+y = music_data['genre']
+
+# Создаем модель
+model = DecisionTreeClassifier()
+# Обучаем
+model.fit(X, y)
+
+# После обучения модели вызываем метод для создания дот файла
+tree.export_graphviz(model, out_file='music-recommender.dot',
+                            feature_names=['age', 'gender'],
+                            class_names=sorted(y.unique()),
+                            label = 'all',
+                            rounded=True,
+                            filled=True)
+```
+
+Для визуализации .dot формата в VScode надо установить Graphviz (dot)
+filled=True - красит наши блоки в разные цвета
+rounded=True - округляет угол квадратов
+label = 'all' - каждая секция будет иметь текстовое описание
+class_names=sorted(y.unique()) - отображает классы используя уникальные жанры
+feature_names=['age', 'gender'], - Устанавливаем по каким критериям происходит сравнение правила
 
 </details>
