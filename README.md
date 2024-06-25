@@ -264,7 +264,7 @@ feature_names=['age', 'gender'], - Устанавливаем по каким к
 <details>
 <summary>
     
-### : 
+### : ML Linear Regression Analysis
 </summary>
 
 </details>
