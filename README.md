@@ -266,7 +266,6 @@ feature_names=['age', 'gender'], - Устанавливаем по каким к
     
 ### : ML Linear Regression Analysis
 
-Need start learning on 7/20
 </summary>
 
 </details>
